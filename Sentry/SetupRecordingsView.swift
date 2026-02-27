@@ -10,8 +10,12 @@ import AVFoundation
 import SwiftUI
 
 class CameraManager: NSObject, ObservableObject {
+    @StateObject var vm = SentryConfigurationManager.shared
+    
     @Published var isAuthorized = false
     @Published var authorizationStatus: AVAuthorizationStatus = .notDetermined
+    @Published var availableCameras: [AVCaptureDevice] = []
+    @Published var selectedCamera: AVCaptureDevice?
 
     let captureSession = AVCaptureSession()
     private var videoDeviceInput: AVCaptureDeviceInput?
@@ -19,8 +23,25 @@ class CameraManager: NSObject, ObservableObject {
     override init() {
         super.init()
         checkPermission()
+        discoverCameras()
     }
 
+    func discoverCameras() {
+        let discoverySession = AVCaptureDevice.DiscoverySession(
+            deviceTypes: [.builtInWideAngleCamera, .externalUnknown],
+            mediaType: .video,
+            position: .unspecified
+        )
+        availableCameras = discoverySession.devices
+        
+        // Set default to front camera if available, otherwise first camera
+        if let frontCamera = availableCameras.first(where: { $0.position == .front }) {
+            selectedCamera = frontCamera
+        } else {
+            selectedCamera = availableCameras.first
+        }
+    }
+    
     func checkPermission() {
         authorizationStatus = AVCaptureDevice.authorizationStatus(for: .video)
         isAuthorized = authorizationStatus == .authorized
@@ -44,14 +65,20 @@ class CameraManager: NSObject, ObservableObject {
     }
 
     private func setupCamera() {
+        guard let videoDevice = selectedCamera else { return }
+        
         captureSession.beginConfiguration()
+
+        // Remove existing input if any
+        if let existingInput = videoDeviceInput {
+            captureSession.removeInput(existingInput)
+        }
 
         if captureSession.canSetSessionPreset(.medium) {
             captureSession.sessionPreset = .medium
         }
 
-        guard let videoDevice = AVCaptureDevice.default(.builtInWideAngleCamera, for: .video, position: .front),
-              let videoDeviceInput = try? AVCaptureDeviceInput(device: videoDevice),
+        guard let videoDeviceInput = try? AVCaptureDeviceInput(device: videoDevice),
               captureSession.canAddInput(videoDeviceInput)
         else {
             captureSession.commitConfiguration()
@@ -66,6 +93,16 @@ class CameraManager: NSObject, ObservableObject {
         DispatchQueue.global(qos: .background).async {
             self.captureSession.startRunning()
         }
+    }
+    
+    func switchCamera(to device: AVCaptureDevice) {
+        selectedCamera = device
+        vm.cfg.sentryRecordingDevice = device.uniqueID
+        
+        // Only reconfigure if we're already authorized and running
+        guard isAuthorized else { return }
+        
+        setupCamera()
     }
 
     deinit {
@@ -126,6 +163,22 @@ struct SetupRecordingsView: View {
                         .background(.black)
                         .frame(height: 150)
                         .cornerRadius(8)
+                    
+                    if cameraManager.availableCameras.count > 1 {
+                        Picker("Camera", selection: Binding(
+                            get: { cameraManager.selectedCamera },
+                            set: { newCamera in
+                                if let camera = newCamera {
+                                    cameraManager.switchCamera(to: camera)
+                                }
+                            }
+                        )) {
+                            ForEach(cameraManager.availableCameras, id: \.uniqueID) { camera in
+                                Text(camera.localizedName).tag(camera as AVCaptureDevice?)
+                            }
+                        }
+                        .pickerStyle(.menu)
+                    }
                 } else {
                     Rectangle()
                         .foregroundStyle(.black)

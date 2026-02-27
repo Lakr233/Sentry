@@ -97,6 +97,16 @@
         }
       }
     },
+    "Camera" : {
+      "localizations" : {
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "摄像头"
+          }
+        }
+      }
+    },
     "Camera Access Denied" : {
       "localizations" : {
         "zh-Hans" : {

@@ -160,4 +160,5 @@ struct SentryConfiguration: Codable, Equatable, Hashable {
     }
 
     var sentryRecordingEnabled: Bool = false
+    var sentryRecordingDevice: String? = nil
 }
