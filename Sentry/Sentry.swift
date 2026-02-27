@@ -303,8 +303,8 @@ class Sentry: NSObject, ObservableObject {
             mediaType: .video,
             position: .unspecified
         )
-        
-        return discovery.devices.first(where: { $0.uniqueID == deviceID }) ?? AVCaptureDevice.default(.builtInWideAngleCamera, for: .video, position: .front)
+        return discovery.devices.first(where: { $0.uniqueID == deviceID })
+            ?? AVCaptureDevice.default(.builtInWideAngleCamera, for: .video, position: .front)
     }
 
     private func startRecording() {
@@ -319,8 +319,6 @@ class Sentry: NSObject, ObservableObject {
         guard let captureSession else { return }
 
         captureSession.beginConfiguration()
-        
-        print("[*] persisted device ID: \(configuration.sentryRecordingDevice ?? "n/a")")
 
         if captureSession.canSetSessionPreset(.medium) {
             captureSession.sessionPreset = .medium
@@ -334,8 +332,6 @@ class Sentry: NSObject, ObservableObject {
             self.captureSession = nil
             return
         }
-        
-        print("[*] device name: \(videoDevice.localizedName)")
 
         captureSession.addInput(videoDeviceInput)
         videoFileOutput = AVCaptureMovieFileOutput()

@@ -146,7 +146,7 @@ struct SentryOption: View {
         .clipShape(RoundedRectangle(cornerRadius: 8))
         .overlay {
             Image(systemName: "checkmark.circle.fill")
-                .foregroundColor(.green)
+                .foregroundStyle(.green)
                 .opacity(isActivated ? 1 : 0)
                 .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .topTrailing)
                 .offset(x: 4, y: -4)

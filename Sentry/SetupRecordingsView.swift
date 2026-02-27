@@ -10,8 +10,8 @@ import AVFoundation
 import SwiftUI
 
 class CameraManager: NSObject, ObservableObject {
-    @StateObject var vm = SentryConfigurationManager.shared
-    
+    private let vm = SentryConfigurationManager.shared
+
     @Published var isAuthorized = false
     @Published var authorizationStatus: AVAuthorizationStatus = .notDetermined
     @Published var availableCameras: [AVCaptureDevice] = []
@@ -33,9 +33,11 @@ class CameraManager: NSObject, ObservableObject {
             position: .unspecified
         )
         availableCameras = discoverySession.devices
-        
-        // Set default to front camera if available, otherwise first camera
-        if let frontCamera = availableCameras.first(where: { $0.position == .front }) {
+
+        let persistedID = vm.cfg.sentryRecordingDevice
+        if let persisted = availableCameras.first(where: { $0.uniqueID == persistedID }) {
+            selectedCamera = persisted
+        } else if let frontCamera = availableCameras.first(where: { $0.position == .front }) {
             selectedCamera = frontCamera
         } else {
             selectedCamera = availableCameras.first
@@ -187,9 +189,9 @@ struct SetupRecordingsView: View {
                             VStack {
                                 Image(systemName: "camera.fill")
                                     .font(.largeTitle)
-                                    .foregroundColor(.white)
+                                    .foregroundStyle(.white)
                                 Text(cameraManager.authorizationStatus == .denied ? "Camera Access Denied" : "Requesting Camera Access...")
-                                    .foregroundColor(.white)
+                                    .foregroundStyle(.white)
                                     .font(.caption)
                             }
                         }
