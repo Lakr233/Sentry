@@ -73,3 +73,6 @@ This software is intended for legitimate security monitoring of your own devices
 ---
 
 Copyright 2025 © Lakr Aream. All rights reserved.
+## Sponsor
+
+[LookInside](https://lookinside-app.com/) helps you inspect a running iOS or macOS app UI from your Mac.
