@@ -70,6 +70,10 @@ This project is licensed under the MIT License. See the LICENSE file for details
 
 This software is intended for legitimate security monitoring of your own devices. Users are responsible for ensuring compliance with local laws and regulations regarding recording and monitoring.
 
+## Sponsor
+
+[LookInside](https://lookinside-app.com/) helps you inspect a running iOS or macOS app UI from your Mac.
+
 ---
 
 Copyright 2025 © Lakr Aream. All rights reserved.

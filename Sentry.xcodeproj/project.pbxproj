@@ -9,6 +9,7 @@
 /* Begin PBXBuildFile section */
 		50D001242DE0F18200BB8467 /* ColorfulX in Frameworks */ = {isa = PBXBuildFile; productRef = 50D001232DE0F18200BB8467 /* ColorfulX */; };
 		50D0FD7E2DE0EEAE00BB8467 /* SkyLightWindow in Frameworks */ = {isa = PBXBuildFile; productRef = 50D0FD7D2DE0EEAE00BB8467 /* SkyLightWindow */; };
+		EEAFF074FCE857D4B21BA159 /* LookInsideServer in Frameworks */ = {isa = PBXBuildFile; productRef = 1B464926BC77B9FCD7205F0C /* LookInsideServer */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -43,6 +44,7 @@
 			files = (
 				50D0FD7E2DE0EEAE00BB8467 /* SkyLightWindow in Frameworks */,
 				50D001242DE0F18200BB8467 /* ColorfulX in Frameworks */,
+				EEAFF074FCE857D4B21BA159 /* LookInsideServer in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -87,6 +89,7 @@
 			packageProductDependencies = (
 				50D0FD7D2DE0EEAE00BB8467 /* SkyLightWindow */,
 				50D001232DE0F18200BB8467 /* ColorfulX */,
+				1B464926BC77B9FCD7205F0C /* LookInsideServer */,
 			);
 			productName = Sentry;
 			productReference = 50D0FD622DE0ED6000BB8467 /* Sentry.app */;
@@ -119,8 +122,10 @@
 			packageReferences = (
 				50D0FD7C2DE0EEAE00BB8467 /* XCRemoteSwiftPackageReference "SkyLightWindow" */,
 				50D001222DE0F18200BB8467 /* XCRemoteSwiftPackageReference "ColorfulX" */,
+				080E9438DF000D4C691F9179 /* XCRemoteSwiftPackageReference "LookInside-Release" */,
 			);
 			preferredProjectObjectVersion = 77;
+			productRefGroup = 50D0FD632DE0ED6000BB8467 /* Products */;
 			projectDirPath = "";
 			projectRoot = "";
 			targets = (
@@ -317,6 +322,10 @@
 				DEVELOPMENT_TEAM = 964G86XT2P;
 				ENABLE_HARDENED_RUNTIME = YES;
 				ENABLE_PREVIEWS = YES;
+				EXCLUDED_SOURCE_FILE_NAMES = (
+					"$(inherited)",
+					"LookInsideServer*",
+				);
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = Sentry/Info.plist;
 				INFOPLIST_KEY_CFBundleDisplayName = Sentry;
@@ -362,6 +371,14 @@
 /* End XCConfigurationList section */
 
 /* Begin XCRemoteSwiftPackageReference section */
+		080E9438DF000D4C691F9179 /* XCRemoteSwiftPackageReference "LookInside-Release" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/LookInsideApp/LookInside-Release.git";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 0.2.2;
+			};
+		};
 		50D001222DE0F18200BB8467 /* XCRemoteSwiftPackageReference "ColorfulX" */ = {
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/Lakr233/ColorfulX";
@@ -381,6 +398,11 @@
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
+		1B464926BC77B9FCD7205F0C /* LookInsideServer */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 080E9438DF000D4C691F9179 /* XCRemoteSwiftPackageReference "LookInside-Release" */;
+			productName = LookInsideServer;
+		};
 		50D001232DE0F18200BB8467 /* ColorfulX */ = {
 			isa = XCSwiftPackageProductDependency;
 			package = 50D001222DE0F18200BB8467 /* XCRemoteSwiftPackageReference "ColorfulX" */;
